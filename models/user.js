@@ -79,11 +79,13 @@ class User {
   }
 
   getNewId () {
-    if (!window.id) {
-      window.id = 0
+    let usersId = parseInt(localStorage.getItem('usersID'))
+    if (!usersId > 0) {
+      usersId = 0
     }
-    id++
-    return id
+    usersId++
+    localStorage.setItem('usersID', usersId)
+    return usersId
   }
 
   save () {
@@ -100,6 +102,16 @@ class User {
       users.push(this)
     }
     // sessionStorage.setItem('users', JSON.stringify(users))
+    localStorage.setItem('users', JSON.stringify(users))
+  }
+
+  remove () {
+    let users = User.getUsersStorage()
+    users.forEach((userData, index) => {
+      if (this._id === userData._id) {
+        users.splice(index, 1)
+      }
+    })
     localStorage.setItem('users', JSON.stringify(users))
   }
 }
